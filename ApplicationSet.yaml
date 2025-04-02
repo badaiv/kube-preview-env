@@ -8,10 +8,10 @@ spec:
         github:
           owner: badaiv
           repo: docker-hello-world # (1)
-#          tokenRef:
-#            key: token
-#            secretName: github-token # (2)
-        requeueAfterSeconds: 15
+          tokenRef:
+            key: token
+            secretName: github-token # (2)
+        requeueAfterSeconds: 60
   template:
     metadata:
       name: 'sample-hello-world-{{branch}}-{{number}}'
