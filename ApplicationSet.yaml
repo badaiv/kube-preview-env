@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: sample-spring-preview
+  name: sample-hello-world-preview
 spec:
   generators:
     - pullRequest:
         github:
-          owner: piomin
-          repo: sample-spring-kotlin-microservice # (1)
-          tokenRef:
-            key: token
-            secretName: github-token # (2)
-        requeueAfterSeconds: 60
+          owner: badaiv
+          repo: docker-hello-world # (1)
+#          tokenRef:
+#            key: token
+#            secretName: github-token # (2)
+        requeueAfterSeconds: 15
   template:
     metadata:
-      name: 'sample-spring-{{branch}}-{{number}}'
+      name: 'sample-hello-world-{{branch}}-{{number}}'
     spec:
       destination:
         namespace: 'preview-{{branch}}'
@@ -23,7 +23,7 @@ spec:
       source:
         # (3)
         path: preview/
-        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        repoURL: 'https://github.com/badaiv/kube-preview-env.git'
         targetRevision: HEAD
         helm:
           parameters:
@@ -35,9 +35,9 @@ spec:
               value: '{{head_sha}}'
             # (6)
             - name: image
-              value: sample-kotlin-spring
+              value: docker-hello-world
             - name: name
-              value: sample-spring-kotlin
+              value: docker-hello-world-preview
       # (7)
       syncPolicy:
         automated:
