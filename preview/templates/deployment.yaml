@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.name }}
-        image: quay.io/pminkows/{{ .Values.image }}:{{ .Values.version }}
+        image: badaiv/{{ .Values.image }}:{{ .Values.version }}
         resources:
           requests:
             memory: "128Mi"
