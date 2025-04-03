@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: sample-hello-world-preview
+  name: hello-world-preview
 spec:
   generators:
     - pullRequest:
@@ -11,25 +11,25 @@ spec:
           tokenRef:
             key: token
             secretName: github-token # (2)
-        requeueAfterSeconds: 60
+        requeueAfterSeconds: 30
   template:
     metadata:
-      name: 'sample-hello-world-{{branch}}-{{number}}'
+      name: 'hello-world-{{branch}}-{{number}}'
     spec:
       destination:
-        namespace: 'preview-{{branch}}'
+        namespace: 'env-preview-{{branch}}'
         server: 'https://kubernetes.default.svc'
       project: default
       source:
         # (3)
-        path: preview/
+        path: preview-env-helm/
         repoURL: 'https://github.com/badaiv/kube-preview-env.git'
         targetRevision: HEAD
         helm:
           parameters:
             # (4)
             - name: namespace
-              value: 'preview-{{branch}}'
+              value: 'env-preview-{{branch}}'
             # (5)
             - name: version
               value: '{{head_sha}}'

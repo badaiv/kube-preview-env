@@ -1,0 +1,16 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: github-binding
+spec:
+  params:
+    - name: action
+      value: "$(body.action)"
+    - name: repo_fullname
+      value: "$(body.repository.full_name)"
+    - name: pull_request_id
+      value: "$(body.pull_request.id)"
+    - name: branch
+      value: "$(body.pull_request.head.ref)"
+    - name: sha
+      value: "$(body.pull_request.head.sha)"
