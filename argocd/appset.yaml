@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: hello-world-preview
+  name: docker-hello-world
 spec:
   generators:
     - pullRequest:
@@ -14,10 +14,10 @@ spec:
         requeueAfterSeconds: 30
   template:
     metadata:
-      name: 'hello-world-{{branch}}-{{number}}'
+      name: 'docker-hello-world-{{branch}}-{{number}}'
     spec:
       destination:
-        namespace: 'env-preview-{{branch}}'
+        namespace: 'env-preview-docker-hello-world-{{branch}}'
         server: 'https://kubernetes.default.svc'
       project: default
       source:
@@ -29,7 +29,7 @@ spec:
           parameters:
             # (4)
             - name: namespace
-              value: 'env-preview-{{branch}}'
+              value: 'env-preview-docker-hello-world-{{branch}}'
             # (5)
             - name: version
               value: '{{head_sha}}'
