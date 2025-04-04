@@ -1,4 +1,4 @@
-./2minikube.sh
+#./2minikube.sh
 ./3tekton.sh
 ./4argocd.sh
 ./5pipelines.sh

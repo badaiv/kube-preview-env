@@ -55,14 +55,11 @@ spec:
         - fetch-repository
       params:
         - name: IMAGE
-#          value: badaiv/docker-hello-world:$(tasks.fetch-repository.results.commit)
           value: $(params.repo_fullname):$(tasks.fetch-repository.results.commit)
         - name: CONTEXT
           value: ./
         - name: DOCKERFILE
           value: $(workspaces.source.path)/Dockerfile
-#        - name: EXTRA_ARGS
-#          value: ["--no-push"]
       workspaces:
         - name: source
           workspace: myworkspace
