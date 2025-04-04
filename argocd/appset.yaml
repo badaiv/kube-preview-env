@@ -11,13 +11,15 @@ spec:
           tokenRef:
             key: token
             secretName: github-token # (2)
-        requeueAfterSeconds: 30
+        requeueAfterSeconds: 20
+        values:
+          repo_name: docker-hello-world
   template:
     metadata:
-      name: 'hello-world-{{branch}}-{{number}}'
+      name: '{{ .values.repo_name }}-{{branch}}-{{number}}'
     spec:
       destination:
-        namespace: 'env-preview-{{branch}}'
+        namespace: '{{ .values.repo_name }}-{{branch}}-{{number}}'
         server: 'https://kubernetes.default.svc'
       project: default
       source:
@@ -29,15 +31,15 @@ spec:
           parameters:
             # (4)
             - name: namespace
-              value: 'env-preview-{{branch}}'
+              value: '{{ .values.repo_name }}-{{branch}}-{{number}}'
             # (5)
             - name: version
               value: '{{head_sha}}'
             # (6)
             - name: image
-              value: docker-hello-world
+              value: '{{ .values.repo_name }}'
             - name: name
-              value: docker-hello-world-preview
+              value: '{{ .values.repo_name }}'
       # (7)
       syncPolicy:
         automated:
