@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tekton-pipelines # Ensure namespace is set here or via Argo CD Application
+resources:
+  - https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.56.0/release.yaml
+  - https://storage.googleapis.com/tekton-releases/triggers/previous/v0.30.1/release.yaml
+  - https://storage.googleapis.com/tekton-releases/triggers/previous/v0.30.1/interceptors.yaml
+  - https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.56.0/release.yaml
+  # Add other components if needed
