@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of the Argo CD Application managing Tekton
+  name: tekton
+  # Deploy this Application resource into the Argo CD namespace
+  namespace: argocd
+  # Optional: Add finalizer to ensure resources are deleted cleanly
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Reference the Argo CD Project (use 'default' if unsure)
+  project: default
+
+  # Source of the manifests (your Git repository)
+  source:
+    # URL of YOUR Git repository containing the Tekton manifests
+    repoURL: 'https://github.com/badaiv/kube-preview-env.git'
+    # Branch/tag to track
+    targetRevision: HEAD # Or a specific branch/tag like 'main'
+    # Path within the repository where the Tekton manifests are located
+    path: tekton/kustomize # !! CHANGE THIS to match step 2 !!
+    # Specify that the source contains plain Kubernetes manifests
+    directory:
+      recurse: false # Set to true if manifests are split into subdirs
+
+  # Destination cluster and namespace
+  destination:
+    # Target cluster URL (use default for in-cluster)
+    server: 'https://kubernetes.default.svc'
+    # Namespace where Tekton components should be installed
+    # IMPORTANT: Ensure this matches the namespace used in the Tekton manifests
+    # (Tekton typically uses 'tekton-pipelines')
+    namespace: tekton-pipelines
+
+  # Sync policy
+  syncPolicy:
+    automated:
+      # Automatically prune resources deleted from Git
+      prune: true
+      # Automatically sync changes detected in Git
+      selfHeal: true
+    # Options for syncing
+    syncOptions:
+      # Automatically create the destination namespace if it doesn't exist
+      - CreateNamespace=true
+      # Apply resources even if they drift from the live state (recommended)
+      - ApplyOutOfSyncOnly=true
+      # Consider adding ServerSideApply=true for better compatibility with K8s features
+      # - ServerSideApply=true
